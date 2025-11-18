@@ -96,7 +96,7 @@ echo "    Threads   : $THREADS"
 echo "    Output    : $OUTPUT_FILE"
 echo
 
-# Comando principal (o que você me passou, com threads e log)
+# Comando principal 
 medusa -h "$TARGET" -U "$USERLIST" -P "$PASSLIST" -M smbt -t "$THREADS" | tee "$OUTPUT_FILE"
 
 echo
