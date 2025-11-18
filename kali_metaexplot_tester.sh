@@ -150,12 +150,36 @@ menu_smb_enum_users() {
         return
     fi
 
-    echo -e "${INFO} Executando enumeração SMB padrão..."
+    # Pega o alvo
+    read -rp "Alvo (IP ou hostname do TARGET): " TARGET
+    if [[ -z "$TARGET" ]]; then
+        echo -e "${WARN} TARGET não pode ficar em branco."
+        pause
+        return
+    fi
+
+    # Opcional: arquivo de saída
     echo
-    "$SMB_ENUM_SCRIPT"
+    read -rp "Arquivo de saída (ENTER para usar o padrão users_${TARGET}.txt): " OUTFILE
+    echo
+
+    # Monta o comando conforme o uso do script:
+    # ./scripts/smb_enum_user.sh -t <TARGET> [-o <ARQUIVO_SAIDA>]
+    if [[ -n "$OUTFILE" ]]; then
+        echo -e "${INFO} Comando:"
+        echo -e "    ${BOLD}${SMB_ENUM_SCRIPT} -t \"${TARGET}\" -o \"${OUTFILE}\"${RESET}"
+        echo
+        "$SMB_ENUM_SCRIPT" -t "$TARGET" -o "$OUTFILE"
+    else
+        echo -e "${INFO} Comando:"
+        echo -e "    ${BOLD}${SMB_ENUM_SCRIPT} -t \"${TARGET}\"${RESET}"
+        echo
+        "$SMB_ENUM_SCRIPT" -t "$TARGET"
+    fi
 
     pause
 }
+
 
 menu_smb_bruteforce() {
     banner
