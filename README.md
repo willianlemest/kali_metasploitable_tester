@@ -1,4 +1,4 @@
-kali_metaexplot_tester
+Kali Metasploitable Tester
 
 Projeto de laboratório em Kali Linux usando a ferramenta Medusa para simular cenários de ataque de força bruta em serviços expostos por ambientes vulneráveis, como Metasploitable 2 e DVWA.
 
