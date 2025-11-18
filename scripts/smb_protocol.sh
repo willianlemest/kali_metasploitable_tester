@@ -97,7 +97,7 @@ echo "    Output    : $OUTPUT_FILE"
 echo
 
 # Comando principal (o que você me passou, com threads e log)
-medusa -h "$TARGET" -U "$USERLIST" -P "$PASSLIST" -M SMB -t "$THREADS" | tee "$OUTPUT_FILE"
+medusa -h "$TARGET" -U "$USERLIST" -P "$PASSLIST" -M smbt -t "$THREADS" | tee "$OUTPUT_FILE"
 
 echo
 echo "[*] Ataque SMB finalizado. Resultados em: $OUTPUT_FILE"
