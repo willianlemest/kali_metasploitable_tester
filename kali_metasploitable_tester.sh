@@ -198,13 +198,13 @@ menu_smb_bruteforce() {
     echo
 
     # Se o seu medusa usar módulo 'smbnt', troque SMB por smbnt abaixo
-    CMD="medusa -h \"${TARGET}\" -U \"${USERLIST}\" -P \"${PASSLIST}\" -M smbt -t 6"
+    CMD="medusa -h \"${TARGET}\" -U \"${USERLIST}\" -P \"${PASSLIST}\" -M smbnt -t 6"
 
     echo -e "${INFO} Comando:"
     echo -e "    ${BOLD}${CMD}${RESET}"
     echo
 
-    medusa -h "$TARGET" -U "$USERLIST" -P "$PASSLIST" -M smbt -t 6
+    medusa -h "$TARGET" -U "$USERLIST" -P "$PASSLIST" -M smbnt -t 6
 
     pause
 }
