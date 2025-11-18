@@ -1,0 +1,10 @@
+admin
+user
+guest
+test
+ftpuser
+msfadmin
+backup
+service
+webadmin
+operator
