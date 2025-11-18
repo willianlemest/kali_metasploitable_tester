@@ -29,7 +29,7 @@ OK="${GREEN}[OK]${RESET}"
 #        CONFIG GERAL      #
 ############################
 
-FTP_SCRIPT="./scripts/ftp_protocol"               # script FTP
+FTP_SCRIPT="./scripts/ftp_protocol.sh"               # script FTP
 SMB_ENUM_SCRIPT="./scripts/smb_enum_user.sh"      # enum users SMB
 WEB_FORM_SCRIPT="./scripts/web_form_bruteforce.sh" # reservado pra futuro (se usar script próprio)
 
