@@ -102,7 +102,6 @@ Comando base:
 
 enum4linux -a $TARGET | tee output.txt
 
-
 Funções do script:
 
 Verificar se enum4linux está instalado
@@ -147,9 +146,6 @@ kali_metaexplot_tester/
 │   └── (gerados pelos scripts)
 └── README.md
 
-
-Os nomes dos arquivos podem variar, mas a ideia geral é manter scripts, wordlists e logs organizados.
-
 ⚙️ Requisitos
 
 No Kali Linux (ou outra distro compatível), recomenda-se:
@@ -172,19 +168,8 @@ Rede configurada (ex.: Host-Only / Internal Network no VirtualBox)
 
 Clonar o repositório
 
-git clone https://github.com/SEU_USUARIO/kali_metaexplot_tester.git
-cd kali_metaexplot_tester
-
-
-Dar permissão de execução aos scripts
-
-chmod +x scripts/*.sh
-
-
-Rodar o menu principal
-
-./scripts/main_menu.sh
-
+git clone https://github.com/willianlemest/kali_metasploitable_tester
+cd kali_metasploitable_tester
 
 Seguir as instruções na tela
 
@@ -198,11 +183,11 @@ Informar wordlists ou usar as padrão do projeto
 
 O projeto inclui (ou incluirá):
 
-wordlists/users.txt → lista simples de possíveis usuários
+wordlists/users.txt > lista simples de possíveis usuários
 
-wordlists/passwords.txt → lista simples de senhas, incluindo combinações comuns e a senha correta do laboratório
+wordlists/passwords.txt > lista simples de senhas
 
-Recomendado ajustar/adicionar palavras de acordo com o cenário de estudo (Metasploitable 2, DVWA, etc.).
+wordlists/passwords. > Arquivo básico para testes ( 10 itens que podem ser usados para user e passwords)
 
 🛡️ Ética e Responsabilidade
 
@@ -216,13 +201,3 @@ Demonstração de riscos de senhas fracas e serviços expostos
 
 ⚠️ Não utilize este projeto para atacar sistemas de terceiros sem autorização formal.
 O uso indevido pode ser crime de acordo com a legislação vigente.
-
-📌 Próximos Passos / Ideias Futuras
-
-Integração automática da enumeração SMB com a wordlist de usuários
-
-Melhorias no menu (cores, validações, etc.)
-
-Suporte a HTTPS e cookies no módulo de formulário web
-
-Geração de relatórios simples a partir dos logs (sucesso/falha)

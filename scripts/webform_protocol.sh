@@ -152,7 +152,6 @@ run_medusa() {
         user_value="$USERLIST"
     fi
 
-    # Monta comando do Medusa baseado no que você passou
     local MEDUSA_CMD=(
         medusa
         -h "$TARGET"

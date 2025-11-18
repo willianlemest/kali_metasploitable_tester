@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# kali_metaexplot_tester - Menu principal
-# Projeto: kali_metaexplot_tester
-# Autor: William + ChatGPT
+# kali_metasploitable_tester - Menu principal
+# Projeto: kali_metasploitable_tester
+# Autor: Willian Lemes Teixeira
 # Versão: 1.0
 
 ############################
@@ -71,7 +71,7 @@ banner() {
     echo -e "${MAGENTA}  | |/ /__ _| (_)_ __ |  \\/  | ___| |_ __ _| |___   ${RESET}"
     echo -e "${MAGENTA}  | ' // _\` | | | '_ \\| |\\/| |/ _ \\ __/ _\` | / -_)  ${RESET}"
     echo -e "${MAGENTA}  |_|_\\__,_|_|_| .__/ |_|  |_|\\___/\\__\\__,_|_\\___|  ${RESET}"
-    echo -e "${MAGENTA}               |_|   kali_metaexplot_tester         ${RESET}"
+    echo -e "${MAGENTA}               |_|   kali_metasploitable_tester         ${RESET}"
     echo -e "${MAGENTA}====================================================${RESET}"
     echo -e " ${DIM}by William · Medusa · Kali · Metasploitable · DVWA${RESET}"
     echo
@@ -197,7 +197,6 @@ menu_smb_bruteforce() {
     read -rp "Wordlist de senhas (ex: pass.txt): " PASSLIST
     echo
 
-    # Se o seu medusa usar módulo 'smbnt', troque SMB por smbnt abaixo
     CMD="medusa -h \"${TARGET}\" -U \"${USERLIST}\" -P \"${PASSLIST}\" -M smbnt -t 6"
 
     echo -e "${INFO} Comando:"

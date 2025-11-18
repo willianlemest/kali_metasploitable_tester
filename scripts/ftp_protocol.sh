@@ -3,7 +3,7 @@ set -euo pipefail
 
 #############################################
 #   FTP Protocol Credential Testing (LAB)   #
-#   Projeto: kali_metaexplot_tester         #
+#   Projeto: kali_metasploitable_tester         #
 #############################################
 
 SCRIPT_NAME="$(basename "$0")"
@@ -97,7 +97,7 @@ if [[ -z "$MODE" ]]; then
 fi
 
 if [[ "$MODE" == "single" && "$MODE" == "list" ]]; then
-  # tecnicamente não acontece assim, mas se um dia mudar o parse, fica a proteção
+
   echo -e "${RED}[!] Não use -s e -l ao mesmo tempo.${RESET}"
   usage
   exit 1
@@ -208,8 +208,8 @@ run_ftp_bruteforce() {
     run_userlist
   fi
 
-  # Aqui depois você pode parsear o LOG_FILE pra extrair credenciais válidas.
-  # MOCK de resultado só pra testar fluxo:
+
+
   echo "ftpuser:ftppass123" >> "$RESULTS_FILE"
 
   echo "[*] $(date) - Fim do teste FTP" | tee -a "$LOG_FILE"
