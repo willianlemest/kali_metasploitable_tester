@@ -131,21 +131,6 @@ Pergunta caminhos para wordlists (ou usa defaults)
 
 Chama os scripts individuais dentro da pasta scripts/
 
-📂 Estrutura Sugerida do Repositório
-kali_metaexplot_tester/
-├── scripts/
-│   ├── main_menu.sh
-│   ├── ftp_protocol.sh
-│   ├── web_form_http.sh
-│   ├── smb_bruteforce.sh
-│   └── smb_enum_user.sh
-├── wordlists/
-│   ├── users.txt
-│   └── passwords.txt
-├── logs/
-│   └── (gerados pelos scripts)
-└── README.md
-
 ⚙️ Requisitos
 
 No Kali Linux (ou outra distro compatível), recomenda-se:
