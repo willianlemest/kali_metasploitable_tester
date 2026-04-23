@@ -1,188 +1,107 @@
-Kali Metasploitable Tester
+# Kali Metasploitable Tester
 
-Projeto de laboratório em Kali Linux usando a ferramenta Medusa para simular cenários de ataque de força bruta em serviços expostos por ambientes vulneráveis, como Metasploitable 2 e DVWA.
+Lightweight shell project for practicing credential testing and user enumeration in a controlled lab with `medusa` and `enum4linux`.
 
-⚠️ Uso exclusivo para fins educacionais, em ambientes controlados e com autorização.
+This repository remains a Bash/shell project by design. The goal is to keep the workflow simple, readable, and easy to extend for small security lab scenarios such as Metasploitable 2 and DVWA.
 
-🎯 Objetivo do Projeto
+Use only in environments you own or are explicitly authorized to test.
 
-Implementar, documentar e compartilhar um conjunto de scripts em Bash que:
+## Structure
 
-Automatizam testes de força bruta com Medusa:
+```text
+.
+├── main.sh
+├── kali_metasploitable_tester.sh
+├── config.sh
+├── lib/
+│   ├── common.sh
+│   ├── executor.sh
+│   ├── parser.sh
+│   └── reporting.sh
+├── scripts/
+│   ├── ftp_protocol.sh
+│   ├── smb_enum_user.sh
+│   ├── smb_protocol.sh
+│   └── webform_protocol.sh
+├── docs/
+└── wordlists/
+```
 
-FTP
+## What Changed
 
-Formulário Web (DVWA / HTTP simples)
+The project was refactored to separate responsibilities more clearly:
 
-SMB (password spraying)
+- `config.sh`: shared paths, defaults, colors, and constants
+- `lib/common.sh`: validation, error handling, logging helpers, directory helpers
+- `lib/executor.sh`: command printing, command execution, connectivity checks
+- `lib/parser.sh`: result extraction from `enum4linux` and `medusa` output
+- `lib/reporting.sh`: banners and summaries
+- `main.sh`: clean interactive entrypoint
+- `kali_metasploitable_tester.sh`: compatibility wrapper that forwards to `main.sh`
 
-Fazem enumeração de usuários SMB com enum4linux
+Each protocol script still exists as a standalone shell script, but now uses the shared library functions instead of duplicating logic.
 
-Organizam os testes em um menu principal, para que o usuário só precise:
+## Requirements
 
-Informar o IP/host alvo
+- `bash`
+- `medusa`
+- `enum4linux` for SMB enumeration
+- `nc` is optional for the FTP connectivity check
 
-Escolher o cenário de ataque
+Typical lab targets:
 
-Selecionar wordlists (ou usar as padrão do projeto)
+- Metasploitable 2
+- DVWA
+- Other intentionally vulnerable lab systems
 
-Esse projeto não é uma ferramenta “pronta para produção”, e sim um laboratório didático para praticar:
+## Usage
 
-Montagem de comandos Medusa
+Run the interactive menu:
 
-Noções de brute force e password spraying
+```bash
+./main.sh
+```
 
-Enumeração de serviços em ambiente vulnerável
+Backward-compatible entrypoint:
 
-Boas práticas de documentação de testes
+```bash
+./kali_metasploitable_tester.sh
+```
 
-🧱 Cenários Implementados
-1. FTP – Força Bruta
+Run protocol scripts directly if needed:
 
-Script responsável por atacar um serviço FTP no alvo usando Medusa.
+```bash
+./scripts/ftp_protocol.sh -s -t 192.168.56.101 -u admin -P wordlists/passwords.txt
+./scripts/ftp_protocol.sh -l -t 192.168.56.101 -U docs/users.txt -P docs/pass.txt
+./scripts/smb_protocol.sh -t 192.168.56.101 -U docs/users.txt -P docs/pass.txt
+./scripts/smb_enum_user.sh -t 192.168.56.101
+./scripts/webform_protocol.sh -l -t 192.168.56.101 -U docs/users.txt -P docs/pass.txt -r /dvwa/login.php
+```
 
-Comando base (conceito):
+## Output
 
-medusa -h $TARGET -U $USERLIST -P $PASSLIST -M ftp -t 6
+Generated logs go to `logs/` by default.
 
+Examples:
 
-Funcionalidades esperadas:
+- FTP: session directory with full log and extracted credential hits
+- SMB: log file plus extracted result lines
+- Web form: log file plus extracted result lines
+- SMB enumeration: raw `enum4linux` output plus extracted user list
 
-Receber IP/host de destino (-t / TARGET)
+## Notes
 
-Usar lista de usuários e senhas (ou arquivos padrão do repositório)
+- The refactor keeps the core workflow intact: prompt for target, run the selected tool, save output, show a summary.
+- Result extraction is based on common `medusa` success markers such as `ACCOUNT FOUND` and `SUCCESS`.
+- The previous FTP script wrote a hardcoded fake credential into the results file. That behavior was removed as a correctness fix; results are now derived from actual command output.
 
-Exibir o comando antes de rodar (para fins didáticos)
+## Follow-Up Ideas
 
-Salvar o output em arquivo de log (ex.: logs/ftp_*.log)
+- Add `shellcheck` and a tiny `test` target for syntax validation.
+- Standardize language across messages if you want the UI fully in Portuguese or fully in English.
+- Add optional defaults for bundled wordlists in `wordlists/`.
+- Add a non-interactive mode in `main.sh` for automation.
 
-2. Formulário Web (HTTP) – Força Bruta
+## Ethics
 
-Script para testar brute force em formulários de login web (ex.: DVWA em modo low/medium, sem HTTPS, sem cookies avançados).
-
-Comando base (conceito):
-
-medusa -h $TARGET -U $USERLIST -P $PASSLIST -M http \
-  -m PAGE:"$PAGETGT" \
-  -m FORM:"username=^USER^&password=^PASS^&Login=Login" \
-  -m "FAIL=Login failed" \
-  -t 6
-
-
-Pontos configuráveis pelo script:
-
-TARGET → IP/host do servidor web
-
-PAGETGT → caminho da página de login (ex.: /dvwa/login.php)
-
-Wordlists de usuário/senha
-
-Padrão da resposta de falha (FAIL=)
-
-💡 Focado em cenários simples, sem HTTPS e sem cookies complexos, apenas para demonstração.
-
-3. SMB – Password Spraying
-
-Script para testar credenciais em SMB simulando um cenário de password spraying em ambiente vulnerável (ex.: Metasploitable 2).
-
-Comando base (conceito):
-
-medusa -h $TARGET -U $USERLIST -P $PASSLIST -M smb -t 6
-
-
-Integração planejada:
-
-Caso o usuário não tenha lista de usuários, o menu poderá sugerir rodar primeiro a enumeração SMB (abaixo).
-
-4. Enumeração de Usuários SMB (enum4linux)
-
-Script para enumerar usuários em um alvo SMB utilizando enum4linux.
-
-Comando base:
-
-enum4linux -a $TARGET | tee output.txt
-
-Funções do script:
-
-Verificar se enum4linux está instalado
-
-Rodar a enumeração com -a
-
-Salvar output em output.txt (ou pasta logs/)
-
-(Opcional / futuro) Extrair usuários de output.txt para um users.txt
-
-🧩 Menu Principal
-
-O projeto possui (ou terá) um script principal que:
-
-Exibe um menu interativo com opções, por exemplo:
-
-[1] FTP – Bruteforce
-[2] Web Form – Bruteforce (HTTP)
-[3] SMB – Password Spraying
-[4] SMB – Enumeração de Usuários (enum4linux)
-[0] Sair
-
-
-Pergunta o IP/host alvo
-
-Pergunta caminhos para wordlists (ou usa defaults)
-
-Chama os scripts individuais dentro da pasta scripts/
-
-⚙️ Requisitos
-
-No Kali Linux (ou outra distro compatível), recomenda-se:
-
-medusa
-
-enum4linux
-
-bash
-
-Ambientes vulneráveis para teste:
-
-Metasploitable 2
-
-DVWA (rodando em outra VM ou container)
-
-Rede configurada (ex.: Host-Only / Internal Network no VirtualBox)
-
-🚀 Como Usar
-
-Clonar o repositório
-
-git clone https://github.com/willianlemest/kali_metasploitable_tester
-cd kali_metasploitable_tester
-
-Seguir as instruções na tela
-
-Informar IP/host do alvo
-
-Escolher o cenário (FTP, Web, SMB, Enumeração)
-
-Informar wordlists ou usar as padrão do projeto
-
-📑 Wordlists
-
-O projeto inclui (ou incluirá):
-
-wordlists/users.txt > lista simples de possíveis usuários
-
-wordlists/passwords.txt > lista simples de senhas
-
-wordlists/passwords. > Arquivo básico para testes ( 10 itens que podem ser usados para user e passwords)
-
-🛡️ Ética e Responsabilidade
-
-Este projeto foi criado para fins educacionais, especialmente para:
-
-Estudos de Segurança da Informação
-
-Laboratórios em ambiente controlado
-
-Demonstração de riscos de senhas fracas e serviços expostos
-
-⚠️ Não utilize este projeto para atacar sistemas de terceiros sem autorização formal.
-O uso indevido pode ser crime de acordo com a legislação vigente.
+This project is for educational and lab use only. Do not use it against systems without explicit authorization.

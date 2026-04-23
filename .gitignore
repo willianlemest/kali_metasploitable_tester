@@ -1,0 +1,5 @@
+logs/
+*.raw
+*.log
+*.tmp
+*.bak
